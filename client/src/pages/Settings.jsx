@@ -39,17 +39,26 @@ export default function Settings() {
         {network?.addresses?.length ? (
           <div className="network-box">
             {network.addresses.map((a) => (
-              <div key={a.address} style={{ marginBottom: 8 }}>
+              <div key={a.address + a.interface} style={{ marginBottom: 8 }}>
                 <div style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>{a.interface}</div>
                 <a href={a.url}>{a.url}</a>
               </div>
             ))}
+            {network.hint && (
+              <p className="hint" style={{ marginTop: 10, marginBottom: 0 }}>
+                {network.hint}
+              </p>
+            )}
           </div>
         ) : (
           <div className="network-box">
-            In production mode use the address printed in the server terminal.
-            <br />
-            Dev mode: <code>http://YOUR-PC-IP:5173</code>
+            Open <strong>http://YOUR-HOST-IP:{network?.port || 3847}</strong> on your phone
+            (same Wi‑Fi as this computer).
+            {network?.hint ? (
+              <p className="hint" style={{ marginTop: 10, marginBottom: 0 }}>
+                {network.hint}
+              </p>
+            ) : null}
           </div>
         )}
         <p className="hint" style={{ marginTop: 12 }}>

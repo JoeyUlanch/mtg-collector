@@ -10,7 +10,12 @@
     "dev:client": "cd client && npm run dev",
     "build": "cd client && npm run build",
     "start": "cd server && npm start",
-    "setup": "npm install && cd server && npm install && cd ../client && npm install"
+    "setup": "npm install && cd server && npm install && cd ../client && npm install",
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "docker:backup": "docker compose cp mtg-collector:/data/mtg.db ./mtg-backup.db"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"

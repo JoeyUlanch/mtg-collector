@@ -1,0 +1,32 @@
+# Build context
+.git
+.gitignore
+.gitattributes
+.dockerignore
+
+# Dependencies & build output (rebuilt inside the image)
+node_modules
+**/node_modules
+client/dist
+server/data
+data
+
+# Local env / secrets
+.env
+.env.*
+!.env.example
+
+# Docs & helpers not needed at runtime
+docs
+*.md
+!README.md
+start.bat
+start-dev.bat
+LICENSE
+
+# Editor / OS
+.vscode
+.idea
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,33 @@
+services:
+  mtg-collector:
+    build: .
+    image: mtg-collector:latest
+    container_name: mtg-collector
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3847}:3847"
+    environment:
+      NODE_ENV: production
+      PORT: "3847"
+      HOST: "0.0.0.0"
+      DATA_DIR: /data
+      SESSION_SECRET: ${SESSION_SECRET:-mtg-collector-change-me-in-production}
+      PUBLIC_URL: ${PUBLIC_URL:-}
+    volumes:
+      - mtg-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3847/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+
+volumes:
+  mtg-data:
+    name: mtg-collector-data

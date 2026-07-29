@@ -251,18 +251,36 @@ app.post('/api/identify', requireAuth, async (req, res) => {
 
 app.use('/api', routes);
 
+app.get('/api/health', (_req, res) => {
+  res.json({ ok: true, service: 'mtg-collector' });
+});
+
 // Network info helper
 app.get('/api/network-info', requireAuth, (req, res) => {
   const nets = os.networkInterfaces();
   const addresses = [];
+  if (process.env.PUBLIC_URL) {
+    addresses.push({
+      interface: 'public',
+      address: process.env.PUBLIC_URL,
+      url: process.env.PUBLIC_URL.replace(/\/$/, ''),
+    });
+  }
   for (const name of Object.keys(nets)) {
     for (const net of nets[name] || []) {
-      if (net.family === 'IPv4' && !net.internal) {
+      const family = net.family === 4 || net.family === 'IPv4';
+      if (family && !net.internal) {
         addresses.push({ interface: name, address: net.address, url: `http://${net.address}:${PORT}` });
       }
     }
   }
-  res.json({ port: PORT, addresses });
+  res.json({
+    port: PORT,
+    addresses,
+    hint: process.env.PUBLIC_URL
+      ? null
+      : 'On Docker, container IPs may not work on your phone — use your host PC LAN IP and this port.',
+  });
 });
 
 // Serve production client

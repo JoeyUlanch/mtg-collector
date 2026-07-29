@@ -2,7 +2,12 @@ node_modules/
 client/node_modules/
 server/node_modules/
 server/data/
+data/
 client/dist/
 *.log
 .DS_Store
 .env
+.env.local
+mtg-backup.db
+*.db
+!docs/**
